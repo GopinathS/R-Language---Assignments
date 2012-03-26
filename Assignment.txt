@@ -88,7 +88,7 @@ Row count :
 
 awk 'BEGIN {}{n++} END {print (n)}' Cricket.txt
 
-Column count :
+Column count : 
 ------------
 awk 'BEGIN{FS=";"};END {print NF}' Cricket.txt
 
@@ -104,6 +104,8 @@ In R language : We use to read the file by using seperator but in this case , we
 In Excel : Opening any text file by Excel will ask for a  delimiter which is again (,) and cause the same issue like above.
 
 These are my views on R and Excel , please correct if it is wrong.
+
+
 
 
 

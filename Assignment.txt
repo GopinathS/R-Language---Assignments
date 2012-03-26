@@ -1,0 +1,113 @@
+Hi Prasoon ,
+
+Good morning. Please find the solution for the given assignments. I apologize for the delay .
+
+
+
+                                                  Assignment - 1: 
+
+1) How many games has India won? 
+
+nrow(ODI[ODI$Winner=="India",])
+ 375
+
+2) What is the highest score in an inning?
+
+max(ODI[,6],ODI[,7])
+ 438
+
+3) How many games were played in 1980 and 2010?
+
+nrow(ODI[(ODI$Matchyear==1980 | ODI$Matchyear==2010),])
+ 119
+
+4) How many games were won by India in 1980?
+
+nrow(ODI[ODI$Matchyear==1980 & ODI$Winner=="India",])
+ 3
+
+5) What is India's win % since 1980? 
+
+(nrow(ODI[ODI$Winner=="India" & ODI$Matchyear>=1980,]) / nrow(ODI[(ODI$Team1=="India" | ODI$Team2=="India") & ODI$Matchyear>=1980,]) ) * 100
+
+51.44429
+
+
+6) Bonus: Who has won most games? 
+
+     Most<-aggregate(ODI$Winner,list(ODI$Winner),FUN=length)
+     Most[which(max(Most$x)==Most$x) ,]
+     
+         Group.1   x
+      1 Australia 470
+
+
+
+                                                   Assignment - 2 :  
+
+1)  Barplot of the number of India wins in games against Pak year-over-year  
+
+           IWon<-ODI[ODI$Winner=="India",]
+           VersusPak<-IWon[IWon$Team1=="Pakistan" | IWon$Team2=="Pakistan",]
+           x<-aggregate(VersusPak$Matchyear,list(VersusPak$Matchyear),FUN=length)
+           barplot(x[,2],names.arg=x[,1],ylim=c(0,7))
+   
+2)  Barplot of India's % wins in each ground_country
+  
+
+        Played<-ODI[ODI$Team1=="India"|ODI$Team2=="India",c("Team1","Team2","Winner","Ground_Country")]
+           indiawin<-ODI[ODI$Winner=="India",c("Winner","Ground_Country")]
+            winner_GrdCountry<-aggregate(indiawin$Ground_Country,list(indiawin$Ground_Country),length)
+            PlayedTotal<-aggregate(Played$Ground_Country,list(Played$Ground_Country),length)
+            merge(winner_GrdCountry,PlayedTotal,by="Group.1")
+            mergedGC<-merge(winner_GrdCountry,PlayedTotal,by="Group.1")
+            percentage<-mergedGC[(mergedGC$x.x/mergedGC$x.y)*100,]
+            PercentGrndCountry<-cbind(mergedGC,(mergedGC[,2]/mergedGC[,3])*100)
+            A<-PercentGrndCountry[,1]
+            B<-PercentGrndCountry[,4]
+            barplot(B,names.arg=A,ylim=c(0,70))
+
+3)     Barplot of Top 10 grounds with most number of matches
+   
+
+           Ground<-aggregate(ODI$Ground,list(ODI$Ground),FUN=length)
+           Ordered<-Ground[order(-Ground$x),]
+           topten<-Ordered[1:10,]
+           barplot(topten[,2],names.arg=topten[,1],Groundlim=c(0,350))
+           
+           
+           
+           
+           
+
+                                                        Assignment -3 (Test):
+
+
+Row count :
+---------
+
+awk 'BEGIN {}{n++} END {print (n)}' Cricket.txt
+
+Column count :
+------------
+awk 'BEGIN{FS=";"};END {print NF}' Cricket.txt
+
+Replace : by ,
+--------------
+
+sed 's/;/,/g' Cricket.txt > ODI.txt
+
+
+Side effects reading the file in R and  Excel :
+
+In R language : We use to read the file by using seperator but in this case , we need to use (,) comma as a separator which is present almost in all the columns.
+In Excel : Opening any text file by Excel will ask for a  delimiter which is again (,) and cause the same issue like above.
+
+These are my views on R and Excel , please correct if it is wrong.
+
+
+
+
+
+
+
